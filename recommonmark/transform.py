@@ -212,6 +212,24 @@ class AutoStructify(transforms.Transform):
                                      node.parent,
                                      self.current_level)
             return self.state_machine.run_role('math', content=content)
+        elif content.startswith(':doc:'):
+            content = content[len(':doc:'):]
+            self.state_machine.reset(self.document,
+                                     node.parent,
+                                     self.current_level)
+            node = self.state_machine.run_role('confluence_link', content=content)
+            return node
+        elif content.startswith(':code:'):
+            # use the ``` syntax which *should* be supported below?
+            return None
+        elif content.startswith(':emoji:'):
+            return None
+        elif content.startswith(':note:'):
+            # probably want to use run_direc
+            return None
+        elif content.startswith(':warning:'):
+            # probably want to use run_direc
+            return None
         else:
             return None
 
